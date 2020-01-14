@@ -12135,6 +12135,37 @@ module.exports = yeast;
 
 /***/ }),
 
+/***/ "./src/components/Message.js":
+/*!***********************************!*\
+  !*** ./src/components/Message.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _jsxFileName = "/Users/taylormilliman/chat-app/frontend/src/components/Message.js";
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+
+var Message = function Message(_ref) {
+  var message = _ref.message;
+  return __jsx("div", {
+    className: "text-white",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 5
+    },
+    __self: this
+  }, message.text);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Message);
+
+/***/ }),
+
 /***/ "./src/pages/index.js":
 /*!****************************!*\
   !*** ./src/pages/index.js ***!
@@ -12155,6 +12186,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 /* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _components_Message__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/Message */ "./src/components/Message.js");
 
 
 
@@ -12164,6 +12196,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var _jsxFileName = "/Users/taylormilliman/chat-app/frontend/src/pages/index.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement;
+
 
 
 var socket;
@@ -12191,8 +12224,8 @@ function (_Component) {
 
     _this.state = {
       endpoint: "http://localhost:3001/",
-      name: '',
-      message: '',
+      name: "",
+      text: "",
       messages: []
     };
     socket = socket_io_client__WEBPACK_IMPORTED_MODULE_8___default()(_this.state.endpoint);
@@ -12214,16 +12247,16 @@ function (_Component) {
     key: "handleMessageChange",
     value: function handleMessageChange(e) {
       this.setState({
-        message: e.target.value
+        text: e.target.value
       });
     }
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
-      socket.emit('chat message', {
+      socket.emit("chat message", {
         name: this.state.name,
-        message: this.state.message
+        text: this.state.text
       });
     }
   }, {
@@ -12231,22 +12264,22 @@ function (_Component) {
     value: function render() {
       console.log(this.state.messages);
       return __jsx("div", {
-        className: "flex justify-center mb-32",
+        className: "justify-center mb-32",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 52
+          lineNumber: 57
         },
         __self: this
       }, __jsx("form", {
-        className: "flex flex-col md:flex-row w-full h-64 md:h-24 container fixed",
+        className: "flex flex-col md:flex-row w-full h-64 md:h-24 container",
         onSubmit: this.handleSubmit,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 53
+          lineNumber: 58
         },
         __self: this
       }, __jsx("input", {
-        className: "bg-transparent w-full md:w-40 h-24 pl-2",
+        className: "bg-transparent w-full md:w-40 h-24 pl-2 text-white",
         type: "text",
         placeholder: "name",
         onChange: this.handleNameChange,
@@ -12254,18 +12287,18 @@ function (_Component) {
         required: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 54
+          lineNumber: 62
         },
         __self: this
       }), __jsx("input", {
-        className: "bg-transparent w-full md:w-screen h-full md:h-24 pb-32 md:pb-0 pl-2",
+        className: "bg-transparent w-full md:w-screen text-white h-full md:h-24 pb-32 md:pb-0 pl-2",
         type: "text",
         placeholder: "message",
-        value: this.state.message,
+        value: this.state.text,
         onChange: this.handleMessageChange,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 62
+          lineNumber: 70
         },
         __self: this
       }), __jsx("button", {
@@ -12273,26 +12306,27 @@ function (_Component) {
         type: "submit",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 69
+          lineNumber: 77
         },
         __self: this
       }, "Send")), __jsx("div", {
-        className: "mt-100",
+        className: "container mx-auto",
         id: "chat",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 76
+          lineNumber: 84
         },
         __self: this
       }, this.state.messages.map(function (msg) {
-        return __jsx("div", {
-          key: msg.message,
+        return __jsx(_components_Message__WEBPACK_IMPORTED_MODULE_9__["default"], {
+          key: msg,
+          message: msg,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 77
+            lineNumber: 86
           },
           __self: this
-        }, msg.message);
+        });
       })));
     }
   }]);
