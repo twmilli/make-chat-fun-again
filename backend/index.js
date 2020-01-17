@@ -6,6 +6,15 @@ var port = process.env.PORT || 3001;
 
 io.on('connection', function(socket){
     socket.on('chat message', function(msg){
+        var now = new Date(Date.now())
+        var day = now.getDate();
+        var month = now.getMonth() + 1;
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        formattedDate = month + "-" + day + " " + hours + ":" + minutes;
+    
+        msg.sentTime = formattedDate;
+
         io.emit('chat message', msg);
         console.log(msg)
     });
