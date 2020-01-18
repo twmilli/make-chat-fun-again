@@ -1,6 +1,10 @@
 # Chat app
 
 ### Setup instructions:
+Node Version: v8.12.0
+NPM Version: 6.4.1
+
+
 1. clone the repository: git clone https://github.com/twmilli/make-chat-fun-again.git
 2. run `npm install` in both the frontend and backend directories
 3. run `node index.js` in the backend directory
