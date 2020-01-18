@@ -24,6 +24,7 @@ class Header extends Component {
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.onNewQuestion = this.onNewQuestion.bind(this);
+    this.getQuestionAndCloseModal = this.getQuestionAndCloseModal.bind(this);
 
     socket.on("chat message", this.onNewMessage);
     socket.on("new question", this.onNewQuestion);
@@ -39,9 +40,11 @@ class Header extends Component {
   };
 
   onNewQuestion(question) {
-    this.setState({
-      currrentQuestion: question,
-    })
+    if (question != this.state.currentQuestion && question != null) {
+      this.setState({
+        currentQuestion: question
+      });
+    }
   }
 
   handleNameChange(e) {
@@ -73,14 +76,15 @@ class Header extends Component {
 
   hideModal() {
     this.setState({ showModal: false });
-    this.getQuestion('HARD');
   }
 
-  async getQuestion(difficulty) {
-    const endpoint = "http://localhost:3001/question/hard";
-    const response = await fetch(endpoint, {
-      method: 'GET',
+  getQuestionAndCloseModal(difficulty) {
+    const endpoint = `http://localhost:3001/question/${difficulty}`;
+    fetch(endpoint, {
+      method: "GET"
     });
+
+    this.hideModal();
   }
 
   render() {
@@ -123,18 +127,36 @@ class Header extends Component {
             ))}
           </div>
         </div>
+        <div className="absolute bottom-0 w-full justify-center flex mb-32">
+          {this.state.currentQuestion && (
+            <div className="text-white">
+              Current Question: {this.state.currentQuestion}
+            </div>
+          )}
+        </div>
         <div className="absolute bottom-0 w-full justify-center flex">
           <Modal show={this.state.showModal} handleClose={this.hideModal}>
-            <p>What type of question do you want to ask the group?</p>
-            <p>Data</p>
+            <h2 className="text-2xl">
+              What type of question do you want to ask the group?
+            </h2>
+            <div className="flex-row flex justify-around">
+              <button className="bg-green-700 text-white mt-6 rounded h-16 px-8" onClick={() => this.getQuestionAndCloseModal("easy")}>
+                Easy 😃
+              </button>
+              <button className="bg-yellow-500 text-white mt-6 rounded h-16 px-8" onClick={() => this.getQuestionAndCloseModal("medium")}>
+                Medium 😊
+              </button>
+              <button className="bg-red-500 text-white mt-6 rounded h-16 px-8" onClick={() => this.getQuestionAndCloseModal("hard")}>
+                Spicy 🌶️
+              </button>
+            </div>
           </Modal>
-          {this.state.currentQuestion ? (
-            <div>{this.state.currentQuestion}</div>
-          ) : (
-            <button className="bg-purple-700 text-white mt-6 rounded h-16 px-8 w-9/12" onClick={this.showModal}>
-              Generate a new question
-            </button>
-          )}
+          <button
+            className="bg-purple-700 text-white mt-6 rounded h-16 px-8 w-9/12"
+            onClick={this.showModal}
+          >
+            Generate a new question
+          </button>
         </div>
       </div>
     );
