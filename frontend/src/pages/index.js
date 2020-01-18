@@ -13,18 +13,20 @@ class Header extends Component {
       name: "",
       text: "",
       messages: [],
-      current_question: null,
+      currentQuestion: null,
       showModal: false
     };
     socket = io(this.state.endpoint);
-
-    socket.on("chat message", this.onNewMessage);
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.onNewQuestion = this.onNewQuestion.bind(this);
+
+    socket.on("chat message", this.onNewMessage);
+    socket.on("new question", this.onNewQuestion);
   }
 
   onNewMessage = msg => {
@@ -35,6 +37,12 @@ class Header extends Component {
       };
     });
   };
+
+  onNewQuestion(question) {
+    this.setState({
+      currrentQuestion: question,
+    })
+  }
 
   handleNameChange(e) {
     this.setState({
@@ -54,9 +62,9 @@ class Header extends Component {
       name: this.state.name,
       text: this.state.text
     });
-    /**this.setState({
+    this.setState({
       text: ""
-    });*/
+    });
   }
 
   showModal() {
@@ -65,10 +73,17 @@ class Header extends Component {
 
   hideModal() {
     this.setState({ showModal: false });
+    this.getQuestion('HARD');
+  }
+
+  async getQuestion(difficulty) {
+    const endpoint = "http://localhost:3001/question/hard";
+    const response = await fetch(endpoint, {
+      method: 'GET',
+    });
   }
 
   render() {
-    console.log(this.state.messages);
     return (
       <div className="mb-32">
         <div>
@@ -110,13 +125,13 @@ class Header extends Component {
         </div>
         <div className="absolute bottom-0 w-full justify-center flex">
           <Modal show={this.state.showModal} handleClose={this.hideModal}>
-            <p>Modal</p>
+            <p>What type of question do you want to ask the group?</p>
             <p>Data</p>
           </Modal>
-          {this.state.current_question ? (
-            <div>{this.state.current_question}</div>
+          {this.state.currentQuestion ? (
+            <div>{this.state.currentQuestion}</div>
           ) : (
-            <button className="bg-purple-700 text-white mt-6 rounded h-16 px-8 w-9/12">
+            <button className="bg-purple-700 text-white mt-6 rounded h-16 px-8 w-9/12" onClick={this.showModal}>
               Generate a new question
             </button>
           )}
